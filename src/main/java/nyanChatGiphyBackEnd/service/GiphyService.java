@@ -9,19 +9,20 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class GiphyService {
 
 
-    public ArrayList<ResponseData> getImagesFromAPI() throws IOException {
+    public List<ResponseData> getImagesFromAPI() throws IOException {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> giphy = restTemplate.getForEntity(
                 "http://api.giphy.com/v1/gifs/search?q=ryan+gosling&api_key=fjtnCi7UwhEb04yzyHE8b0N3n9KlzAiA", String.class);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(giphy.getBody());
         JsonNode data = root.path("data");
-        ArrayList<ResponseData> imageList = new ArrayList<>();
+        List<ResponseData> imageList = new ArrayList<>();
         for (JsonNode node : data) {
             JsonNode images = node.get("images");
             JsonNode originalStill = images.get("original_still");

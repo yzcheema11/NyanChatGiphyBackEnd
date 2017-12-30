@@ -2,6 +2,7 @@ package nyanChatGiphyBackEnd.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponseData {
@@ -10,7 +11,17 @@ public class ResponseData {
     private String width;
     private String height;
 
-    ArrayList <String> originalStills = new ArrayList<>();
+    List<String> originalStills = new ArrayList<>();
+
+    public ResponseData(String url, String width, String height) {
+        this.url = url;
+        this.width = width;
+        this.height = height;
+    }
+
+    public ResponseData() {
+
+    }
 
 
     public String getWidth() {
