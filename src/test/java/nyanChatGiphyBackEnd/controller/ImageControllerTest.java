@@ -20,6 +20,8 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.io.IOException;
 import java.util.Arrays;
 
 @RunWith(SpringRunner.class)
@@ -45,7 +47,8 @@ public class ImageControllerTest {
     public void getImageStills() throws Exception {
         Mockito.when(giphyService.getImagesFromAPI()).thenReturn(Arrays.asList(mockGiphy1, mockGiphy2, mockGiphy3));
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/");
-        MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(3)))
+        MvcResult result = mockMvc.perform(requestBuilder).andExpect(status()
+                .isOk()).andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$[0].url", is("url1")))
                 .andExpect(jsonPath("$[0].width", is("width1")))
                 .andExpect(jsonPath("$[0].height", is("height1")))
@@ -55,6 +58,15 @@ public class ImageControllerTest {
                 .andExpect(jsonPath("$[2].url", is("url3")))
                 .andExpect(jsonPath("$[2].width", is("width3")))
                 .andExpect(jsonPath("$[2].height", is("height3"))).andReturn();
+    }
+
+    @Test
+    public void getImageStillsNull() throws Exception {
+        Mockito.when(giphyService.getImagesFromAPI()).thenThrow(IOException.class);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/");
+        MvcResult result = mockMvc.perform(requestBuilder)
+                .andExpect(status()
+                .isNotFound()).andReturn();
     }
 
 }
