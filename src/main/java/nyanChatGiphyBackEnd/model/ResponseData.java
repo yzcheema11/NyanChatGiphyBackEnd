@@ -23,7 +23,6 @@ public class ResponseData {
 
     }
 
-
     public String getWidth() {
         return width;
     }
